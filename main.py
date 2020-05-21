@@ -1,9 +1,3 @@
-"""
-RIDS EX.4
-@author: Nitai Mordechai
-@mail: nitai.mordehcai@mail.huji.ac.il
-02.03.2020
-"""
 from Constants import host, port, N,F
 import threading
 from server import server
