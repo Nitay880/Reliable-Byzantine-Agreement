@@ -59,3 +59,11 @@ def no_delay():
         servers_threads.append(threading.Thread(target=servers[-1].start_work))
     for s in servers_threads:
         s.start()
+def run_server():
+    s=[]
+    for i in range(N):
+        server().start_work()
+
+
+if __name__=="__main__":
+    run_server()

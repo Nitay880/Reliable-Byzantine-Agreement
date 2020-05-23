@@ -4,6 +4,7 @@ import socket
 from message import Message
 from Communication import recieve_message, send_message
 import Constants
+from Constants import host,port,DELAY
 import time
 import signal
 
@@ -24,6 +25,7 @@ import signal
 |   ;/            \   \  /   \   \  /   |  ,   /  |  ,     .-./    ---`-'                        
 '---'              `----'     `----'     ---`-'    `--`---'                                      
                                                                                                  """
+Animation= "|/-\\"
 
 
 class mediator:
@@ -33,7 +35,6 @@ class mediator:
         :param port: host port
         :param long_delay: 0 no delay, 1 long delay, 2 moderate delay
         """
-        self._emitted = []
         self._leader = 0
         self._view = 0
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -74,10 +75,12 @@ class mediator:
                         continue
                     self._sockets.append(client_socket)
                     user = message.split("|")[0]
-                    self._client_sockets[user] = client_socket
-                    mes = Message('med', user.split("|")[0], "SYN-ACK", '', 0, message.split("|")[-1])
-                    send_message(client_socket, mes)
-                    self._num_of_connected += 1
+                    if user=="new":
+                        this_user_id=str(self._num_of_connected)
+                        self._num_of_connected+=1
+                        self._client_sockets[this_user_id]=client_socket
+                        mes = Message('med',this_user_id , "SYN-ACK", '', 0, message.split("|")[-1])
+                        send_message(client_socket, mes)
                 else:
                     message = recieve_message(notified_socket)
                     waiting_time = randint(0, self._delta)
@@ -90,10 +93,14 @@ class mediator:
 
     def out_pending_messages(self, signum, frame):
         if self._num_of_connected < Constants.N:
+            print("mediator is waiting for N servers to initiation  pending:"+str(len(self._pending)),end="\r")
+            print(len(self._pending))
             signal.alarm(1)
             return
         N = len(self._pending)
         i = 0
+        print(N)
+        print("mediator is Delivering "+str(len(self._pending)),end="\r")
         while i < N:
             if (time.time() - self._pending[i][Constants.STARTING_TIME]) >= self._pending[i][Constants.WAITING_TIME]:
                 message = self._pending.pop(i)[0]
@@ -102,10 +109,10 @@ class mediator:
                 self.deliver_message(message)
             i += 1
         signal.alarm(1)
-
+    
     def close_connection(self):
         self._socket.close()
-
+        exit(1)
     def deliver_message(self, message):
         # print(message)
         if message==False:
@@ -116,7 +123,11 @@ class mediator:
             if message_target in self._client_sockets.keys() and message_target not in self._recieve_omission and message_source not in self._send_omission:
                 target_socket = self._client_sockets[message_target]
                 # here the omission fauilure comes into play
-                # todo: as this is an asynchrnous, delay messages from time to time via clock - signals and uniform random delay
+                # todo: as this is an asynchrnous, delay messages from time to time via clock - signals and uniform random delay DONE
                 send_message(target_socket,
                              Message(message_source, message_target, message_type, message_content, message_view,
                                      message_world))
+
+if __name__=="__main__":
+    med=mediator(host,port,DELAY)
+    med.work()

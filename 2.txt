@@ -1,0 +1,13 @@
+Server 2is connected to the Med!
+med|2|SYN-ACK||0|2
+SENDING
+0|2|value|0|0|0
+1|2|value|1|0|1
+0|2|echo |1|0|1
+1|2|echo |0|0|0
+1|2|echo |1|0|1
+0|2|echo |0|0|0
+0|2|done||0|0
+1|2|done||0|1
+1|2|vc-value-gather|0|0|0
+0|2|vc-value-gather|0|0|0

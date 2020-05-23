@@ -1,12 +1,14 @@
 import threading
+import multiprocessing
 import random
 from Constants import N, F, MESSAGE_LENGTH
 
 # todo: split messages if _str_ > message length, barrier has to be N-F
-barrier = threading.Barrier(N-F)
+barrier = multiprocessing.Barrier(N-F)
 leader=0
 c=0
 def ideal_functionality():
+    print("in ideal")
     global c
     global leader
     barrier.wait()
