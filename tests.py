@@ -60,10 +60,6 @@ def no_delay():
     for s in servers_threads:
         s.start()
 def run_server():
-    s=[]
-    for i in range(N):
-        server().start_work()
-
 
 if __name__=="__main__":
     run_server()

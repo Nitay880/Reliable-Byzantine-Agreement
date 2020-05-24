@@ -2,12 +2,12 @@ import socket
 import sys
 import errno
 from message import Message
-from Communication import recieve_message, send_message, ideal_functionality
 from Constants import N,F,port,host
+from Communication import recieve_message, send_message,ideal_functionality
+
 """                                                              
 Server Code (A single processor/Thread)   
 """
-
 
 
 class server:
@@ -18,6 +18,7 @@ class server:
         :param id: server's id (0,...,N-1)               (protocol detail)
         """
         # each server starts with an id
+        self._quit=False
         self._id=id
         self._stage = "COMMUNICATION_INITIALIZATION"
         # value::the value i locked on world i
@@ -43,7 +44,7 @@ class server:
         self._mediator_socket.setblocking(False)
         self._current_leader = 0
         # send first message to the mediator
-        mes = Message("new", "med", "SYN", '', self._views[self._id], self._id)
+        mes = Message(self._id, "med", "SYN", '', self._views[self._id], self._id)
         send_message(self._mediator_socket, mes)
     def rm_log(self):
         with open(str(self._id)+".txt", 'w') as f:
@@ -58,7 +59,6 @@ class server:
     def reset_my_world(self):
     
         self._done_counter = 0
-
         self._views[self._id] += 1
         self._locks[self._id] += 1
         self._stage = "SEND"
@@ -70,12 +70,14 @@ class server:
     def start_work(self):
         # Now we want to loop over received messages (there might be more than one) and print them
         while True:
+            if self._quit:
+                self.close_connection()
             try:
                 # retrieve message
                 self.state_driven()
                 mes = recieve_message(self._mediator_socket)
                 mes and self.message_driven(mes)
-                if mes: self.logit(mes)
+                mes and self.logit(mes)
 
 
             except IOError as e:
@@ -115,7 +117,8 @@ class server:
                 send_message(self._mediator_socket,
                              Message(self._id, i, type, self._values[self._current_leader],
                                      self._locks[self._current_leader], self._current_leader))
-
+    def set_quit(self):
+        self._quit=True
     def message_driven(self, mes):
         # retrieve mes
         message_source, message_target, message_type, message_content, message_view, message_world = mes.split("|")
@@ -183,7 +186,6 @@ class server:
 
     def get_stage(self):
         return self._stage
-
     def ack_handler(self, message_content, message_view, message_world):
         if message_world == self._id and message_view == self._views[self._id] and message_content == self._values[
             self._id]:

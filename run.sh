@@ -1,0 +1,1 @@
+terminator -l rids

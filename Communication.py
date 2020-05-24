@@ -8,7 +8,12 @@ barrier = multiprocessing.Barrier(N-F)
 leader=0
 c=0
 def ideal_functionality():
-    print("in ideal")
+    """The following function is responsible for leader election scheme. It contains a multiprocessing.barrier
+    which waits for N-F processors and then picks a leader and terminates
+    Returns:
+        leader -- id of the current leader
+    """
+    print("*****in ideal functionality*******")
     global c
     global leader
     barrier.wait()
