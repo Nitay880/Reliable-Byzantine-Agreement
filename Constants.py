@@ -2,12 +2,12 @@ from random import randint
 
 
 #Software Configuration
-N = 10
+N = 3
 F = 1
 #Communiction Constants
 host = '127.0.0.1'
 port = 65430
-MESSAGE_LENGTH=45
+MAX_MESSAGE_LENGTH=45
 
 #Mediator Delay Constants
 STARTING_TIME = 1

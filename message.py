@@ -1,22 +1,9 @@
 """
+Message class  - 
 
-
-          ____                                                                                     ,--,
-        ,'  , `.                                                                                 ,--.'|
-     ,-+-,.' _ |                                                                                 |  | :
-  ,-+-. ;   , ||          .--.--.    .--.--.                ,----._,.                            :  : '                 .--.--.    .--.--.
- ,--.'|'   |  || ,---.   /  /    '  /  /    '    ,--.--.   /   /  ' /   ,---.             ,---.  |  ' |     ,--.--.    /  /    '  /  /    '
-|   |  ,', |  |,/     \ |  :  /`./ |  :  /`./   /       \ |   :     |  /     \           /     \ '  | |    /       \  |  :  /`./ |  :  /`./
-|   | /  | |--'/    /  ||  :  ;_   |  :  ;_    .--.  .-. ||   | .\  . /    /  |         /    / ' |  | :   .--.  .-. | |  :  ;_   |  :  ;_
-|   : |  | ,  .    ' / | \  \    `. \  \    `.  \__\/: . ..   ; ';  |.    ' / |        .    ' /  '  : |__  \__\/: . .  \  \    `. \  \    `.
-|   : |  |/   '   ;   /|  `----.   \ `----.   \ ," .--.; |'   .   . |'   ;   /|        '   ; :__ |  | '.'| ," .--.; |   `----.   \ `----.   \
-|   | |`-'    '   |  / | /  /`--'  //  /`--'  //  /  ,.  | `---`-'| |'   |  / |        '   | '.'|;  :    ;/  /  ,.  |  /  /`--'  //  /`--'  /
-|   ;/        |   :    |'--'.     /'--'.     /;  :   .'   \.'__/\_: ||   :    |        |   :    :|  ,   /;  :   .'   \'--'.     /'--'.     /
-'---'          \   \  /   `--'---'   `--'---' |  ,     .-./|   :    : \   \  /          \   \  /  ---`-' |  ,     .-./  `--'---'   `--'---'
-                `----'                         `--`---'     \   \  /   `----'            `----'           `--`---'
-                                                             `--`-'
-The following represent a message
+The following represents a message
 ############
+public fields:
 ::source -  message sender
 ::target -  message reciever
 ::value -   message content
@@ -27,7 +14,7 @@ The following represent a message
 
 
 class Message:
-    def __init__(self, source, target, type, value, view, world):
+    def __init__(self, source, target, type, value, view, world,lock="*"):
         """[summary]
 
         Arguments:
@@ -44,6 +31,7 @@ class Message:
         self._source = source
         self._target = target
         self._type = type
+        self._lock=lock
 
     def get_view(self):
         """The following function returns the message view
@@ -61,6 +49,5 @@ class Message:
         return self._value
 
     def __str__(self):
-
         return str(self._source) + "|" + str(self._target) + "|" + str(self._type) + "|" + str(self._value) + "|" + str(
-            self._view) + "|" + str(self._world)
+            self._view) + "|" + str(self._world)+"|"+str(self._lock)
