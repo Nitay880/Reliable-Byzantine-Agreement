@@ -3,9 +3,8 @@
 the following protocl solves an asynchronous agreement with N = 2f + 1 
 servers and an adaptive adversary that can cause f omission failures.
 
-[![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
+![](RIDS_PROJECT.gif)
 
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
 
 The following project is the final project of reliability in distibuted systems
 
