@@ -1,3 +1,0 @@
-Server 7is connected to the Med!
-med|7|SYN-ACK||0|7|
-SENDING
